@@ -1,0 +1,45 @@
+{% set name = "streamlit-keplergl" %}
+{% set version = "0.3.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/chrieke/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 691fa923491cabd59f95ea08e0a98025b9f994fe3fb2865b1d46eb443c31d774
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  # skip s390x, missing keplergl.
+  skip: true  # [py<36 or s390x]
+
+requirements:
+  host:
+    - python
+    - pip
+    - setuptools
+    - wheel
+  run:
+    - python
+    - keplergl
+    - streamlit >=0.79
+  
+test:
+  imports:
+    - streamlit_keplergl
+  requires:
+    - pip
+  commands:
+    - pip check
+
+about:
+  home: https://github.com/chrieke/streamlit-keplergl
+  doc_url: https://github.com/chrieke/streamlit-keplergl/blob/main/README.md
+  dev_url: https://github.com/chrieke/streamlit-keplergl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Streamlit Component for rendering kepler.gl maps
+  description: Streamlit component for rendering kepler.gl maps in a streamlit app.
